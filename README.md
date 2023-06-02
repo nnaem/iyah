@@ -12,7 +12,7 @@ npm install express discord.js-v13-selfbot
 For the program to function properly, you have to create a file called `config.json` in the project root directory. The file should look like this:
 ```json
 {
-    "token": "your discord token here",
+    "token": "your discord account token here",
     "prefix": "your discord bot prefix here",
     "ownerID": "your discord user id here",
     "password": "your password used for the express auth here"
@@ -21,6 +21,17 @@ For the program to function properly, you have to create a file called `config.j
 You can get your discord token by opening the developer console in the application by pressing `Ctrl + Shift + I`, going to the `Console` tab and pasting this script there:
 ```js
 (webpackChunkdiscord_app.push([[''],{},e=>{m=[];for(let c in e.c)m.push(e.c[c])}]),m).find(m=>m?.exports?.default?.getToken!==void 0).exports.default.getToken()
+```
+
+In the `whitelist-channels.json` file you have to specify the channel IDs accessible by the web server publicly, for the best debugging experience you should be able to read/write in the channel. The file should look like this:
+```json
+{
+    "channelIds": [
+        "channelId1",
+        "channelId2",
+        "channelId3"
+    ]
+}
 ```
 
 # Usage
