@@ -1,0 +1,120 @@
+* {
+    /* Add a nice dark gray background and a nice font */
+    background-color: #222222;
+    color: #eee;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+
+    /* Make sure that page takes up full screen */
+    margin: 0;
+    padding: 0;
+}
+
+/* Make the main-div 100% of the page and make the left 30% be for the channels-div and the right 70% for messages-div, anchor accordingly */
+.main-div {
+    width: 100%;
+    height: 100%;
+
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: stretch;
+
+    overflow: hidden;
+
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    /* Make the main-div take up the full screen */
+    margin: 0;
+    padding: 0;
+}
+
+/* Make the channels-div take up 20% of the screen on the left and the messages-div the rest */
+.channels-div {
+    float: left;
+    width: 20%;
+    height: 100%;
+}
+
+.messages-div {
+    float: right;
+    width: 80%;
+    height: 100%;
+
+    scroll-behavior: smooth;
+    padding: 10px;
+
+    /* Make the messages-div scrollable */
+    overflow-y: scroll;
+}
+
+/* Make the messages-div scroll to the bottom when a new message is added */
+/*.messages-div .message:last-child {
+
+}*/
+
+/* Make messages in the message-div appear "above" the background and give them a border */
+.messages-div #message {
+    background-color: #444;
+    border-bottom: 1px solid #666;
+    padding: 2px;
+    margin-bottom: 5px;
+
+    /* Separate messages from each other with a border */
+    border-radius: 1px;
+
+    width: 100%;
+}
+
+.messages-div #message h3 {
+    padding-left: 4px;
+}
+
+.messages-div #message p {
+    padding-left: 4px;
+}
+
+.messages-div #load-more {
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+
+    /* Make the load-more input button centered horizontally in the div and put it at the top of it with 25 pixels of padding */
+    position: absolute;
+    top: 25px;
+    left: 60%;
+    transform: translateX(-60%);
+}
+
+.channels-div #channel {
+    background-color: #444;
+    border-bottom: 1px solid #666;
+    padding: 2px;
+    margin-bottom: 5px;
+
+    /* Separate messages from each other with a border */
+    border-radius: 1px;
+
+    width: 100%;
+
+    /* Make the channel divs clickable and the text not selectable */
+    cursor: pointer;
+    user-select: none;
+}
+
+.channels-div #channel h3 {
+    padding-left: 4px;
+}
+
+.channels-div #channel p {
+    padding-left: 4px;
+}
+
+/* channels-div padding and margin as well as a border to separate it from the messages-div */
+.channels-div {
+    padding: 10px;
+    border-right: 1px solid #666;
+}
