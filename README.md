@@ -25,3 +25,5 @@ You can get your discord token by opening the developer console in the applicati
 
 # Usage
 You can start the program by simply running `node .` in the project root directory.
+
+Important: You have to use your external IP address to access the webserver. You can find your external IP address by googling "what is my ip address". I don't know why, but the routes don't work with localhost.
