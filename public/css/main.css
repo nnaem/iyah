@@ -118,3 +118,29 @@
     padding: 10px;
     border-right: 1px solid #666;
 }
+
+/* Loading overlay, make it take up the full screen and cover everything but have a low opacity */
+#overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+
+    background-color: #000;
+    opacity: 0.4;
+
+    margin: 0;
+    padding: 0;
+}
+
+/* Loading text, make it take up the full screen and center it */
+#overlay #loading-text {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #000;
+
+    font-size: 50px;
+}

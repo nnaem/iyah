@@ -22,6 +22,9 @@ message.innerHTML = `
     <p>Message content</p>
 `;
 
+// Get the overlay div
+const overlay = document.querySelector('#overlay');
+
 // Ask the user for a password with a prompt and save it in a cookie called "password", make functions for getting and setting cookies too
 const getPassword = () => {
     const password = prompt('Enter password:');
@@ -41,7 +44,9 @@ const getPasswordCookie = () => {
 // Check if the password cookie exists, if not then ask the user for a password
 if (!getPasswordCookie()) getPassword();
 
-// Fetch the channel list from the /fetch-all-channels route
+// Fetch the channel list from the /fetch-all-channels route and display the loading overlay while it's fetching
+overlay.style.display = 'block';
+overlay.querySelector('h1').textContent = 'Fetching channels...';
 fetch(`/fetch-all-channels`, {
     headers: {
         'Authorization': getPasswordCookie()
@@ -49,11 +54,11 @@ fetch(`/fetch-all-channels`, {
 })
     .then(res => res.json())
     .then(async channels => {
+        // Hide the loading overlay
+        overlay.style.display = 'none';
+
         // Create a channel list
         const channelsDiv = document.querySelector('.channels-div');
-
-        // Reverse the channels array
-        channels.reverse();
 
         // Loop through all the channels
         for (const channelObj of channels) {
@@ -68,27 +73,44 @@ fetch(`/fetch-all-channels`, {
 
             // Add a click event listener to the channel clone
             channelClone.addEventListener('click', async () => {
+                // Check if the current channel ID is different from the ID of the channel you're trying to view messages for
+                const currentChannelId = document.querySelector('.messages-div')?.dataset.channelId;
+                if (currentChannelId !== channelObj.id) {
+                    // Clear the messages-div element (only message elements, not the load more button)
+                    const messagesDiv = document.querySelector('.messages-div');
+                    while (messagesDiv.firstChild && messagesDiv.firstChild.id === 'message') {
+                        messagesDiv.removeChild(messagesDiv.firstChild);
+                    }
+                }
+
                 // Fetch the messages from the /fetch-msgs route
-                const lastMessageId = document.querySelector('.messages-div #message')?.dataset.messageId || 0;
-                const url = `/fetch-msgs/${channelObj.id}/25${lastMessageId ? `?lastMessageId=${lastMessageId}` : ''}`;
+                const numMessages = 25;
+                const lastMessageId = document.querySelector('.messages-div #message:last-child')?.dataset.messageId || 0;
+                const url = `/fetch-msgs/${channelObj.id}/${numMessages}${lastMessageId ? `?lastMessageId=${lastMessageId}` : ''}`;
+                
+                // Display the loading overlay while it's fetching
+                overlay.querySelector('h1').textContent = `Fetching ${numMessages} messages...`;
+                overlay.style.display = 'block';
+                
                 const response = await fetch(url, {
                     headers: {
                         'Authorization': getPasswordCookie()
                     }
                 });
                 if (response.ok) {
+                    // Hide the loading overlay
+                    overlay.style.display = 'none';
+
                     const messages = await response.json();
 
-                    // Reverse the messages array
+                    // Reverse the order of the messages
                     messages.reverse();
 
                     // Create a message list
                     const messagesDiv = document.querySelector('.messages-div');
                     console.log(messages);
-                    // Loop through all the messages in reverse order
-                    for (let i = messages.length - 1; i >= 0; i--) {
-                        const messageObj = messages[i];
-
+                    // Loop through all the messages
+                    for (const messageObj of messages) {
                         // Only add the message if its ID is greater than the last message ID that was displayed
                         if (messageObj.id > lastMessageId) {
                             // Create a message clone from the message template
@@ -103,11 +125,17 @@ fetch(`/fetch-all-channels`, {
                             // Set the message ID as a data attribute on the message clone
                             messageClone.dataset.messageId = messageObj.id;
 
-                            // Append the message clone to the messages-div at the beginning
-                            messagesDiv.insertBefore(messageClone, messagesDiv.firstChild);
+                            // Append the message clone to the messages-div at the end
+                            messagesDiv.appendChild(messageClone);
                         }
                     }
+
+                    // Set the channel ID as a data attribute on the messages-div element
+                    messagesDiv.dataset.channelId = channelObj.id;
                 } else {
+                    // Set the loading overlay text to "Failed to fetch messages"
+                    overlay.querySelector('h1').textContent = 'Failed to fetch messages, please refresh the page and try again';
+
                     console.error('Failed to fetch messages');
                 }
             });
