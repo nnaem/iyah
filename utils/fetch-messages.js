@@ -26,6 +26,16 @@ const fetchMessages = async (channelId, amount = 25, lastMessageId) => {
         message.authorDiscriminator = message.author.discriminator;
     }
 
+    // Check if a message has an attachment, if so, add it to the message object as attachmentURL in an array (always)
+    for (const message of messages.values()) {
+        if (message.attachments.size > 0) {
+            message.attachmentURL = [];
+            for (const attachment of message.attachments.values()) {
+                message.attachmentURL.push(attachment.url);
+            }
+        }
+    }
+
     // Return the messages
     return messages;
 }

@@ -77,6 +77,12 @@
     padding-left: 4px;
 }
 
+.messages-div .attachments-div img {
+    border: #eee 1px solid;
+    border-radius: 2px;
+    margin: 5px;
+}
+
 .messages-div #load-more {
     text-align: center;
     padding: 10px;
