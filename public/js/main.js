@@ -26,7 +26,7 @@ message.innerHTML = `
 const overlay = document.querySelector('#overlay');
 
 // Ask the user for a password with a prompt and save it in a cookie called "password", make functions for getting and setting cookies too
-const getPassword = () => {
+/*const getPassword = () => {
     const password = prompt('Enter password:');
     document.cookie = `password=${password}`;
 }
@@ -39,6 +39,27 @@ const getPasswordCookie = () => {
     const cookies = document.cookie.split(';');
     const passwordCookie = cookies.find(cookie => cookie.startsWith('password='));
     return passwordCookie?.split('=')[1];
+}
+
+// Check if the password cookie exists, if not then ask the user for a password
+if (!getPasswordCookie()) getPassword();*/
+
+// Get the password from the user
+const getPassword = () => {
+    const password = prompt('Enter password:');
+    
+    // Set the password cookie with the SameSite attribute set to "None" because otherwise it won't work on localhost
+    document.cookie = `password=${password}; SameSite=None`;
+}
+
+// Get the password cookie (make sure it's not undefined if it's read from localhost)
+const getPasswordCookie = () => {
+    const cookies = document.cookie.split(';');
+    const passwordCookie = cookies.find(cookie => cookie.startsWith('password='));
+    return passwordCookie?.split('=')[1];
+    
+    // If the password cookie is undefined then ask the user for a password
+    if (!passwordCookie) getPassword();
 }
 
 // Check if the password cookie exists, if not then ask the user for a password
