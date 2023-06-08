@@ -77,6 +77,27 @@
     padding-left: 4px;
 }
 
+.messages-div .attachments-div img {
+    border: #eee 1px solid;
+    border-radius: 2px;
+    margin: 5px;
+}
+
+.messages-div .attachments-div video {
+    border: #eee 1px solid;
+    border-radius: 2px;
+    margin: 5px;
+}
+
+.messages-div .attachments-div a {
+    border: #eee 1px solid;
+    border-radius: 2px;
+    margin: 5px;
+    padding: 5px;
+    text-decoration: none;
+    color: #eee;
+}
+
 .messages-div #load-more {
     text-align: center;
     padding: 10px;
@@ -143,4 +164,9 @@
     background-color: #000;
 
     font-size: 50px;
+
+    /* Unselectable */
+    user-select: none;
+
+    color: #eee;
 }
